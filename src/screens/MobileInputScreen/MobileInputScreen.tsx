@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {View, Text} from 'react-native';
 import {styles, MOBILE_INPUT_HEIGHT} from './MobileInputScreen.styles';
 import {useNavigation} from '@react-navigation/native';
@@ -25,6 +25,7 @@ import {colorWhite, colorPrimary} from '../../theme/Colors';
 import {SCREEN_HEIGHT} from '../../util/ScreenUtils';
 import {TextInput, TapGestureHandler, State} from 'react-native-gesture-handler';
 import BackButton from '../../components/BackButton/BackButton';
+import LanguagePicker, {LanguageKey} from '../../components/LanguagePicker/LanguagePicker';
 
 const FLAG_EMOJI = '🇱🇰';
 const COUNTRY_CODE = '+94';
@@ -69,14 +70,18 @@ export default function MobileInputScreen() {
         outputRange: [colorPrimary, colorWhite, colorWhite],
     });
 
+    const languagePickerTranslateY = interpolate(scaleAnimation, {
+        inputRange: [0, 1],
+        outputRange: [-60, 60],
+    });
+
     useCode(() => cond(eq(scale.current, 0), set(scale.current, 1)), []);
     useCode(
-        () => 
+        () =>
             cond(eq(gestureState.current, State.END), [
                 cond(eq(isOpen.current, 0), set(isOpen.current, 1)),
                 cond(eq(isOpen.current, 1), delay(call([], focusTextInput), 300)),
-            ])
-        ,
+            ]),
         [gestureState.current],
     );
     useCode(
@@ -99,8 +104,15 @@ export default function MobileInputScreen() {
 
     const submitText = (text: string) => {
         console.log(`Mobile number ${text}`);
-        if (!!text) { navigation.navigate('Otp');}
-    }
+        if (!!text) {
+            navigation.navigate('Otp');
+        }
+    };
+
+    const selectLanguage = (key: LanguageKey) => {
+        setLanguage(key);
+    };
+    const [selectedLanguage, setLanguage] = useState<LanguageKey>('si');
 
     return (
         <View style={styles.rootContainer}>
@@ -108,7 +120,15 @@ export default function MobileInputScreen() {
                 isOpenAnimation={isOpenAnimation}
                 gestureHandler={backButtonGestureHandler}
             />
+            <Animated.View
+                style={[
+                    styles.languagePickerContainer,
+                    {transform: [{translateY: languagePickerTranslateY}]},
+                ]}>
+                <LanguagePicker />
+            </Animated.View>
             <Logo scale={scaleAnimation} />
+
             <Animated.View
                 style={[styles.outerInputContainer, {transform: [{translateY: outerTranslateY}]}]}>
                 <Animated.View
@@ -123,12 +143,10 @@ export default function MobileInputScreen() {
                         styles.innerInputContainer,
                         {transform: [{translateY: innerTranslateY}]},
                     ]}>
-                    <Animated.Text style={[styles.introText, {}]}>Expand with sri</Animated.Text>
+                    <Text style={styles.introText}>Expand with sri</Text>
                     <TapGestureHandler {...gestureHandler}>
                         <Animated.View>
-                            <Animated.View
-                                style={styles.mobileInputContainer}
-                                pointerEvents={'none'}>
+                            <View style={styles.mobileInputContainer} pointerEvents={'none'}>
                                 <Text
                                     style={
                                         styles.countryCode
@@ -138,10 +156,10 @@ export default function MobileInputScreen() {
                                     style={styles.numberInput}
                                     placeholder={'Enter your mobile number'}
                                     keyboardType="number-pad"
-                                    returnKeyType='done'
-                                    onSubmitEditing={({nativeEvent: {text}})=>submitText(text)}
+                                    returnKeyType="done"
+                                    onSubmitEditing={({nativeEvent: {text}}) => submitText(text)}
                                 />
-                            </Animated.View>
+                            </View>
                         </Animated.View>
                     </TapGestureHandler>
                 </Animated.View>
