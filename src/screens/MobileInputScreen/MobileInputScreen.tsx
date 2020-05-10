@@ -26,9 +26,7 @@ import {SCREEN_HEIGHT} from '../../util/ScreenUtils';
 import {TextInput, TapGestureHandler, State} from 'react-native-gesture-handler';
 import BackButton from '../../components/BackButton/BackButton';
 import LanguagePicker, {LanguageKey} from '../../components/LanguagePicker/LanguagePicker';
-
-const FLAG_EMOJI = '🇱🇰';
-const COUNTRY_CODE = '+94';
+import {MobileInputView} from '../../components/MobileInputView/MobileInputView';
 const ANIMATION_DURATION = 400;
 
 export default function MobileInputScreen() {
@@ -72,7 +70,7 @@ export default function MobileInputScreen() {
 
     const languagePickerTranslateY = interpolate(scaleAnimation, {
         inputRange: [0, 1],
-        outputRange: [-60, 60],
+        outputRange: [-60, 0],
     });
 
     useCode(() => cond(eq(scale.current, 0), set(scale.current, 1)), []);
@@ -146,20 +144,11 @@ export default function MobileInputScreen() {
                     <Text style={styles.introText}>Expand with sri</Text>
                     <TapGestureHandler {...gestureHandler}>
                         <Animated.View>
-                            <View style={styles.mobileInputContainer} pointerEvents={'none'}>
-                                <Text
-                                    style={
-                                        styles.countryCode
-                                    }>{`${FLAG_EMOJI} ${COUNTRY_CODE}`}</Text>
-                                <TextInput
-                                    ref={textInputRef}
-                                    style={styles.numberInput}
-                                    placeholder={'Enter your mobile number'}
-                                    keyboardType="number-pad"
-                                    returnKeyType="done"
-                                    onSubmitEditing={({nativeEvent: {text}}) => submitText(text)}
-                                />
-                            </View>
+                            <MobileInputView
+                                submitText={submitText}
+                                textInputRef={textInputRef}
+                                selectedLanguage="si"
+                            />
                         </Animated.View>
                     </TapGestureHandler>
                 </Animated.View>
