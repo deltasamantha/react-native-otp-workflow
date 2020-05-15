@@ -5,6 +5,7 @@ import MobileInputScreen from '../screens/MobileInputScreen/MobileInputScreen';
 import OtpScreen from '../screens/OtpScreen/OtpScreen';
 
 type AuthStackParamList = {
+    MobileInputNew: undefined;
     MobileInput: undefined;
     Otp: undefined;
 };
