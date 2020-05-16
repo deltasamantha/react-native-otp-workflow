@@ -1,6 +1,5 @@
 import React, {useRef} from 'react';
-import {View, StyleSheet, Dimensions, Text, ImageComponent} from 'react-native';
-import {colorPrimary, colorWhite, colorBlackish} from '../../theme/Colors';
+import {View} from 'react-native';
 import Logo from '../../components/Logo/Logo';
 import Animated, {
     Value,
@@ -132,7 +131,6 @@ export default function MobileInputScreen() {
                 <MobileInputView
                     submitText={submitText}
                     textInputRef={textInputRef}
-                    selectedLanguage="si"
                     isOpenAnimation={isOpenAnimation}
                     gestureHandler={gestureHandler}
                 />

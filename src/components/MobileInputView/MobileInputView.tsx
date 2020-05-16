@@ -1,6 +1,5 @@
 import React from 'react';
 import {View, Text, TextInput} from 'react-native';
-import {LanguageKey} from '../LanguagePicker/LanguagePicker';
 import Animated, {interpolate} from 'react-native-reanimated';
 import {TapGestureHandler} from 'react-native-gesture-handler';
 import {styles, INPUT_FONT_SIZE} from './MobileInputView.styles';
@@ -11,7 +10,6 @@ const COUNTRY_CODE = '+94';
 interface MobileInputViewProps {
     submitText: (text: string) => void;
     textInputRef: any;
-    selectedLanguage: LanguageKey;
     isOpenAnimation: Animated.Node<number>;
     gestureHandler: any;
 }
